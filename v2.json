@@ -1,0 +1,23 @@
+{
+  "paths": {
+    "/v1/users": {
+      "get": {
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false
+          },
+          {
+            "name": "org_id",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/products": {
+      "get": {
+        "parameters": []
+      }
+    }
+  }
+}

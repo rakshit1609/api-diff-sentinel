@@ -1,0 +1,19 @@
+{
+  "paths": {
+    "/v1/users": {
+      "get": {
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false
+          }
+        ]
+      }
+    },
+    "/v1/orders": {
+      "get": {
+        "parameters": []
+      }
+    }
+  }
+}
