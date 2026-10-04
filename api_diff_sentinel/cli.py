@@ -5,6 +5,11 @@ from pathlib import Path
 from .differ import compare_specs
 
 def main():
+    for _s in (sys.stdout, sys.stderr):
+        try:
+            _s.reconfigure(errors="replace")
+        except Exception:
+            pass
     parser = argparse.ArgumentParser(description="API-Diff-Sentinel: Detect API breaking changes between OpenAPI specifications.")
     parser.add_argument("old_spec", help="Path to base/old openapi.json")
     parser.add_argument("new_spec", help="Path to head/new openapi.json")
