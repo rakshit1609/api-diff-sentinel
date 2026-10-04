@@ -1,4 +1,5 @@
 import argparse
+import sys
 import json
 from pathlib import Path
 from .differ import compare_specs
@@ -8,6 +9,7 @@ def main():
     parser.add_argument("old_spec", help="Path to base/old openapi.json")
     parser.add_argument("new_spec", help="Path to head/new openapi.json")
     parser.add_argument("--json", action="store_true", help="Output JSON summary")
+    parser.add_argument("--fail-on-breaking", action="store_true", help="Exit with code 1 if breaking changes are found (for CI)")
     
     args = parser.parse_args()
     old_data = json.loads(Path(args.old_spec).read_text(encoding="utf-8"))
@@ -17,7 +19,7 @@ def main():
     
     if args.json:
         print(json.dumps(diff, indent=2))
-        return
+        sys.exit(1 if (args.fail_on_breaking and diff["is_breaking"]) else 0)
         
     print("🔍 API-Diff-Sentinel Audit Report:")
     print(f"• Verdict: {'🚨 BREAKING CHANGES DETECTED' if diff['is_breaking'] else '✅ COMPATIBLE'}")
@@ -33,6 +35,8 @@ def main():
         print("\n✨ Additions & Enhancements:")
         for nb in diff['non_breaking']:
             print(f"  {nb}")
+    if args.fail_on_breaking and diff["is_breaking"]:
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
